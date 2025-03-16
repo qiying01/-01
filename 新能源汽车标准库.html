@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新能源汽车标准知识库</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --ne-green: #00b894;
+            --ne-blue: #0984e3;
+            --ne-gradient: linear-gradient(135deg, #00b894, #0984e3);
+        }
+
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            background: var(--ne-gradient);
+        }
+
+        .sidebar {
+            background-color: #ffffff;
+            position: sticky;
+            top: 56px; /* 导航栏高度 */
+            height: calc(100vh - 56px); /* 视口高度减去导航栏高度 */
+            overflow-y: auto; /* 允许侧边栏滚动 */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+        }
+
+        .sidebar .list-group-item {
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .list-group-item:hover {
+            background-color: #f1f1f1;
+            transform: translateX(5px);
+        }
+
+        .sidebar .list-group-item.active {
+            background: var(--ne-gradient);
+            color: white;
+            border: none;
+        }
+
+        .standard-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .standard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .standard-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .status-badge {
+            position: absolute;
+            right: -8px;
+            top: -8px;
+            font-size: 0.9rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 12px;
+        }
+
+        .search-box {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-box .form-control {
+            border-radius: 25px;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .search-box .btn {
+            border-radius: 25px;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .pagination .page-item .page-link {
+            border-radius: 12px;
+            margin: 0 0.25rem;
+            color: var(--ne-blue);
+            border: none;
+        }
+
+        .pagination .page-item.active .page-link {
+            background: var(--ne-gradient);
+            color: white;
+            border: none;
+        }
+
+        .carousel-item {
+            height: 300px;
+            background: var(--ne-gradient);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .carousel-item h2 {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .carousel-item p {
+            font-size: 1.2rem;
+        }
+
+        .footer {
+            background: #343a40;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+        .footer a {
+            color: var(--ne-green);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: var(--ne-blue);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            background: var(--ne-gradient);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            text-align: center;
+            line-height: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: static;
+                height: auto;
+                box-shadow: none;
+                padding: 1rem 0;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .standard-card {
+                margin-bottom: 1rem;
+            }
+
+            .carousel-item h2 {
+                font-size: 2rem;
+            }
+
+            .carousel-item p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fa-brands fa-edge-legacy"></i> 新能源汽车标准库
+            </a>
+        </div>
+    </nav>
+
+    <!-- 轮播图 -->
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div>
+                    <h2>最新标准发布</h2>
+                    <p>了解新能源汽车行业的最新动态</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div>
+                    <h2>安全标准更新</h2>
+                    <p>确保电动汽车的安全性能</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div>
+                    <h2>电池技术规范</h2>
+                    <p>探索动力电池的最新技术要求</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 侧边栏 -->
+            <div class="sidebar col-md-3 col-lg-2">
+                <h5 class="mb-3">分类浏览</h5>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action category-filter active" data-category="all">全部标准</a>
+                    <a href="#" class="list-group-item list-group-item-action category-filter" data-category="safety">安全标准</a>
+                    <a href="#" class="list-group-item list-group-item-action category-filter" data-category="battery">电池规范</a>
+                    <a href="#" class="list-group-item list-group-item-action category-filter" data-category="charging">充电设施</a>
+                    <a href="#" class="list-group-item list-group-item-action category-filter" data-category="emission">排放标准</a>
+                    <a href="#" class="list-group-item list-group-item-action category-filter" data-category="performance">性能测试</a>
+                </div>
+            </div>
+
+            <!-- 主内容区 -->
+            <div class="col-md-9 col-lg-10 ms-auto p-4">
+                <!-- 搜索框 -->
+                <div class="search-box mb-4">
+                    <form class="d-flex">
+                        <input id="search-input" class="form-control me-2" type="search" placeholder="搜索标准..." aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- 热门标准推荐 -->
+                <div class="mb-5">
+                    <h4 class="mb-4">热门标准推荐</h4>
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div class="card standard-card">
+                                <div class="card-body">
+                                    <span class="badge bg-success status-badge">现行</span>
+                                    <h5 class="card-title">GB/T 20234-2015</h5>
+                                    <p class="card-text">电动汽车传导充电用连接装置</p>
+                                    <p class="text-muted small">发布日期：2015-12-31</p>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-file-pdf"></i> 查看详情
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="card standard-card">
+                                <div class="card-body">
+                                    <span class="badge bg-success status-badge">现行</span>
+                                    <h5 class="card-title">GB/T 18384-2020</h5>
+                                    <p class="card-text">电动汽车安全要求</p>
+                                    <p class="text-muted small">发布日期：2020-12-01</p>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-file-pdf"></i> 查看详情
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="card standard-card">
+                                <div class="card-body">
+                                    <span class="badge bg-danger status-badge">废止</span>
+                                    <h5 class="card-title">GB/T 31484-2015</h5>
+                                    <p class="card-text">电动汽车用动力蓄电池循环寿命要求</p>
+                                    <p class="text-muted small">发布日期：2015-12-31</p>
+                                    <a href="#" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-file-pdf"></i> 查看详情
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 标准卡片列表 -->
+                <div class="row" id="standard-list">
+                    <!-- 标准卡片将通过JavaScript动态生成 -->
+                </div>
+
+                <!-- 分页 -->
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center" id="pagination">
+                        <!-- 分页按钮将通过JavaScript动态生成 -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container text-center">
+            <p>&copy; 2023 新能源汽车标准知识库. 保留所有权利.</p>
+            <p>联系我们: <a href="mailto:info@example.com">info@example.com</a></p>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 模拟数据
+        const standardsData = [
+            {
+                id: 1,
+                code: "GB/T 20234-2015",
+                title: "电动汽车传导充电用连接装置",
+                date: "2015-12-31",
+                category: "charging",
+                status: "现行",
+                link: "#",
+                description: "本标准规定了电动汽车传导充电用连接装置的技术要求、试验方法和检验规则。",
+                scope: "适用于电动汽车传导充电用连接装置的设计、制造和检验。",
+                publisher: "国家标准化管理委员会"
+            },
+            {
+                id: 2,
+                code: "GB/T 18384-2020",
+                title: "电动汽车安全要求",
+                date: "2020-12-01",
+                category: "safety",
+                status: "现行",
+                link: "#",
+                description: "本标准规定了电动汽车的安全要求，包括电气安全、机械安全和功能安全。",
+                scope: "适用于电动汽车的设计、制造和检验。",
+                publisher: "国家标准化管理委员会"
+            },
+            {
+                id: 3,
+                code: "GB/T 31484-2015",
+                title: "电动汽车用动力蓄电池循环寿命要求",
+                date: "2015-12-31",
+                category: "battery",
+                status: "废止",
+                link: "#",
+                description: "本标准规定了电动汽车用动力蓄电池的循环寿命要求和测试方法。",
+                scope: "适用于电动汽车用动力蓄电池的设计、制造和检验。",
+                publisher: "国家标准化管理委员会"
+            },
+            // 更多数据...
+        ];
+
+        // 动态加载标准卡片
+        function renderStandards(data) {
+            const standardList = document.getElementById('standard-list');
+            standardList.innerHTML = ''; // 清空当前内容
+
+            data.forEach(item => {
+                const card = `
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card standard-card" data-bs-toggle="modal" data-bs-target="#standardModal" data-id="${item.id}">
+                            <div class="card-body">
+                                <span class="badge ${item.status === '现行' ? 'bg-success' : 'bg-danger'} status-badge">${item.status}</span>
+                                <h5 class="card-title">${item.code}</h5>
+                                <p class="card-text">${item.title}</p>
+                                <p class="text-muted small">发布日期：${item.date}</p>
+                                <a href="${item.link}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-file-pdf"></i> 查看详情
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                standardList.insertAdjacentHTML('beforeend', card);
+            });
+
+            // 绑定模态框事件
+            document.querySelectorAll('.standard-card').forEach(card => {
+                card.addEventListener('click', function () {
+                    const id = this.getAttribute('data-id');
+                    const item = standardsData.find(standard => standard.id === parseInt(id));
+                    if (item) {
+                        document.getElementById('modalTitle').innerText = item.code;
+                        document.getElementById('modalDescription').innerText = item.description;
+                        document.getElementById('modalScope').innerText = `适用范围: ${item.scope}`;
+                        document.getElementById('modalPublisher').innerText = `发布单位: ${item.publisher}`;
+                    }
+                });
+            });
+        }
+
+        // 搜索功能
+        const searchInput = document.getElementById('search-input');
+        searchInput.addEventListener('input', function () {
+            const keyword = this.value.trim().toLowerCase();
+            const filteredData = standardsData.filter(item =>
+                item.code.toLowerCase().includes(keyword) ||
+                item.title.toLowerCase().includes(keyword)
+            );
+            renderStandards(filteredData);
+        });
+
+        // 分类筛选
+        document.querySelectorAll('.category-filter').forEach(item => {
+            item.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector('.category-filter.active').classList.remove('active');
+                this.classList.add('active');
+
+                const category = this.getAttribute('data-category');
+                const filteredData = category === 'all'
+                    ? standardsData
+                    : standardsData.filter(item => item.category === category);
+                renderStandards(filteredData);
+            });
+        });
+
+        // 分页功能
+        const itemsPerPage = 6; // 每页显示6个标准
+        let currentPage = 1;
+
+        function renderPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageItem = `
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" data-page="${i}">${i}</a>
+                    </li>
+                `;
+                pagination.insertAdjacentHTML('beforeend', pageItem);
+            }
+
+            // 分页点击事件
+            pagination.querySelectorAll('.page-link').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    currentPage = parseInt(this.getAttribute('data-page'));
+                    renderStandards(getPaginatedData());
+                    renderPagination(standardsData.length);
+                });
+            });
+        }
+
+        function getPaginatedData() {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            return standardsData.slice(start, end);
+        }
+
+        // 初始化
+        renderStandards(getPaginatedData());
+        renderPagination(standardsData.length);
+
+        // 回到顶部按钮
+        const backToTopButton = document.getElementById('backToTop');
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 300) {
+                backToTopButton.style.display = 'block';
+            } else {
+                backToTopButton.style.display = 'none';
+            }
+        });
+
+        backToTopButton.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+
+    <!-- 模态框 -->
+    <div class="modal fade" id="standardModal" tabindex="-1" aria-labelledby="standardModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">标准详情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalDescription"></p>
+                    <p id="modalScope"></p>
+                    <p id="modalPublisher"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
